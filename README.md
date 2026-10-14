@@ -91,7 +91,7 @@ This provides a useful counterpoint to research on inference-time search and ver
 
 | # | Topic | Priority | Status |
 |---:|---|:---:|---|
-| 01 | Test-Time Compute Scaling | ★★★★★ | In Progress |
+| 01 | [Test-Time Compute Scaling](./docs/wiki/01-test-time-compute-scaling.md) | ★★★★★ | Complete |
 | 02 | Robust Verification | ★★★★★ | Planned |
 | 03 | Agentic Evaluations & Long-Horizon Tasks | ★★★★★ | Planned |
 | 04 | Multi-Step Reasoning & Planning | ★★★★★ | Planned |
