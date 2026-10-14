@@ -1,14 +1,14 @@
 # Wiki
 
-This directory contains the paper-first study notes for **Self-Improving Agent Systems**.
+이 디렉터리는 **Self-Improving Agent Systems**의 paper-first 학습 노트를 모은다.
 
-Each chapter maps research ideas to concrete agent-system design questions, with particular attention to inference-time scaling, verification, evaluation, orchestration, and authority boundaries.
+각 챕터는 논문 요약 자체보다 inference-time scaling, verification, evaluation, orchestration, authority boundary가 실제 agent system 설계에 어떻게 연결되는지를 중심으로 정리한다.
 
 ## Chapters
 
 | # | Topic | Status |
 |---:|---|---|
-| 01 | Test-Time Compute Scaling | In Progress |
+| 01 | [Test-Time Compute Scaling](./01-test-time-compute-scaling.md) | Complete |
 | 02 | Robust Verification | Planned |
 | 03 | Agentic Evaluations & Long-Horizon Tasks | Planned |
 | 04 | Multi-Step Reasoning & Planning | Planned |
@@ -21,7 +21,7 @@ Each chapter maps research ideas to concrete agent-system design questions, with
 
 ## Chapter Template
 
-Each completed chapter should roughly cover:
+각 챕터는 대체로 다음 구조를 따른다.
 
 1. Problem
 2. Prerequisites
@@ -37,16 +37,12 @@ Each completed chapter should roughly cover:
 ## Conventions
 
 - **Paper First, Video Optional**
-- Prefer durable abstractions over exhaustive summaries.
-- Treat negative results as first-class evidence.
-- Separate capability from authority.
-- Mark implementation ideas as **APPLY NOW**, **KEEP IN MIND**, or **SKIP**.
-- Update older notes when newer research materially changes the interpretation.
+- 논문 전체 재현보다 오래 남는 abstraction을 우선한다.
+- negative result를 first-class evidence로 취급한다.
+- capability와 authority를 분리해서 본다.
+- 구현 아이디어는 **APPLY NOW / KEEP IN MIND / SKIP**으로 판정한다.
+- 최신 연구가 해석을 실질적으로 바꾸면 기존 노트를 갱신한다.
 
 ## Current Focus
 
-The first chapter is **Test-Time Compute Scaling**.
-
-Its central question is:
-
-> How much can an agent improve by spending more compute at inference time without retraining the underlying model?
+다음 챕터는 **Robust Verification**이다.
