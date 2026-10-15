@@ -9,7 +9,7 @@
 | # | Topic | Status |
 |---:|---|---|
 | 01 | [Test-Time Compute Scaling](./01-test-time-compute-scaling.md) | Complete |
-| 02 | Robust Verification | Planned |
+| 02 | [Robust Verification](./02-robust-verification.md) | Complete |
 | 03 | Agentic Evaluations & Long-Horizon Tasks | Planned |
 | 04 | Multi-Step Reasoning & Planning | Planned |
 | 05 | Learning from Feedback | Planned |
@@ -33,6 +33,7 @@
 8. System Mapping
 9. Apply or Archive
 10. Takeaways
+11. Q&A — 학습 중 개인 질문
 
 ## Conventions
 
@@ -42,7 +43,9 @@
 - capability와 authority를 분리해서 본다.
 - 구현 아이디어는 **APPLY NOW / KEEP IN MIND / SKIP**으로 판정한다.
 - 최신 연구가 해석을 실질적으로 바꾸면 기존 노트를 갱신한다.
+- 학습 도중 실제로 나온 개인 질문은 **Q&A 섹션**에 따로 보존한다.
+- 수학, CS 기초, 기존 프로젝트와의 연결은 **Connecting the dots** 관점에서 명시적으로 기록한다.
 
 ## Current Focus
 
-다음 챕터는 **Robust Verification**이다.
+다음 챕터는 **Agentic Evaluations & Long-Horizon Tasks**다.
