@@ -878,8 +878,14 @@ P N → FN
 
 ## 18. References
 
-- Cobbe et al., *Training Verifiers to Solve Math Word Problems*
-- Lightman et al., *Let's Verify Step by Step*
-- Wang et al., *Math-Shepherd: Verify and Reinforce LLMs Step-by-step without Human Annotations*
-- *Shrinking the Generation-Verification Gap with Weak Verifiers* — Weaver
-- Stanford CS329A — *Self-Improving AI Agents*
+Stanford CS329A Schedule:
+- https://cs329a.stanford.edu/
+
+Papers:
+- Karl Cobbe et al., *Training Verifiers to Solve Math Word Problems* — https://arxiv.org/abs/2110.14168
+- Hunter Lightman et al., *Let's Verify Step by Step* — https://arxiv.org/abs/2305.20050
+- Peiyi Wang et al., *Math-Shepherd: Verify and Reinforce LLMs Step-by-step without Human Annotations* — https://arxiv.org/abs/2312.08935
+- Jon Saad-Falcon et al., *Shrinking the Generation-Verification Gap with Weak Verifiers* — https://arxiv.org/abs/2506.18203
+
+Related implementation:
+- DHAA — https://github.com/Seung-zedd/dhaa
