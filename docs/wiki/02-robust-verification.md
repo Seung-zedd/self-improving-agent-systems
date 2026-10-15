@@ -298,9 +298,9 @@ Weak verifier 3 ─┘
 
 개념적으로 candidate (x)의 score를 다음과 같이 생각할 수 있다.
 
-\`\`\`math
+```math
 Score(x)=w_1V_1(x)+w_2V_2(x)+\cdots+w_nV_n(x)
-\`\`\`
+```
 
 - $V_i(x)$: verifier $i$가 candidate $x$에 준 score
 - $w_i$: verifier $i$의 reliability를 반영하는 scalar weight
@@ -328,7 +328,7 @@ DHAA Macro-workflow
 
 벡터로 쓰면:
 
-\`\`\`math
+```math
 \mathbf{w}=
 \begin{bmatrix}
 w_1\\
@@ -344,13 +344,13 @@ V_2(x)\\
 \vdots\\
 V_n(x)
 \end{bmatrix}
-\`\`\`
+```
 
 따라서 weighted aggregation은:
 
-\`\`\`math
+```math
 Score(x)=\mathbf{w}^{T}\mathbf{v}(x)
-\`\`\`
+```
 
 로 쓸 수 있다.
 
@@ -402,10 +402,9 @@ Jev가 어떤 후보를 높은 confidence로 선택해도 해당 결정이 found
 
 즉:
 
-[
-P(	ext{correct}) 
-eq 	ext{authority}
-]
+```math
+P(\text{correct}) \neq \text{authority}
+```
 
 그래서 confidence는 permission input이 아니라 **observability / calibration signal**로 취급하는 것이 더 안전하다.
 
@@ -472,14 +471,13 @@ Verifier 오류는 대표적으로 다음 네 가지로 볼 수 있다.
 
 이산수학 관점에서는 먼저 실제 상태와 예측 상태를 비교하면 쉽다.
 
-\`\`\`math
+```math
 \mathrm{True} \iff \mathrm{Actual} = \mathrm{Prediction}
-\`\`\`
+```
 
-[
-False iff Actual 
-eq Prediction
-]
+```math
+\mathrm{False} \iff \mathrm{Actual} \neq \mathrm{Prediction}
+```
 
 그 다음 Positive / Negative는 **시스템 예측값**을 따른다.
 
@@ -503,10 +501,9 @@ Actual  Prediction
 
 True / False 판정은 사실상 equality 또는 XNOR 관점으로 볼 수 있다.
 
-[
-True = 
-eg(A oplus P)
-]
+```math
+\mathrm{True} = \neg(A \oplus P)
+```
 
 DHAA에서 Positive를 `AUTO 승인`으로 정의하면:
 
@@ -526,9 +523,9 @@ DHAA에서 Positive를 `AUTO 승인`으로 정의하면:
 
 따라서 authority-sensitive system에서는 보통:
 
-\`\`\`math
+```math
 \mathrm{Cost}(FP) \gg \mathrm{Cost}(FN)
-\`\`\`
+```
 
 으로 보는 것이 자연스럽다.
 
@@ -772,17 +769,17 @@ Weak verifier 3 ─┘
 
 그렇다.
 
-\`\`\`math
+```math
 Score(x)=w_1V_1(x)+w_2V_2(x)+w_3V_3(x)
-\`\`\`
+```
 
 에서 $w_i$는 scalar coefficient에 해당한다.
 
 벡터 표현으로 바꾸면:
 
-\`\`\`math
+```math
 Score(x)=\mathbf{w}^{T}\mathbf{v}(x)
-\`\`\`
+```
 
 가 되어 dot product로도 연결된다.
 
@@ -842,14 +839,13 @@ Decision-Authority-Guard
 
 먼저:
 
-\`\`\`math
+```math
 \mathrm{True} \iff \mathrm{Actual} = \mathrm{Prediction}
-\`\`\`
+```
 
-[
-False iff Actual 
-eq Prediction
-]
+```math
+\mathrm{False} \iff \mathrm{Actual} \neq \mathrm{Prediction}
+```
 
 그리고 뒤의 Positive / Negative는 **Prediction 값**이다.
 
