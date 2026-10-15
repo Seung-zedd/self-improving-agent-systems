@@ -92,7 +92,7 @@ This provides a useful counterpoint to research on inference-time search and ver
 | # | Topic | Priority | Status |
 |---:|---|:---:|---|
 | 01 | [Test-Time Compute Scaling](./docs/wiki/01-test-time-compute-scaling.md) | ★★★★★ | Complete |
-| 02 | Robust Verification | ★★★★★ | Planned |
+| 02 | [Robust Verification](./docs/wiki/02-robust-verification.md) | ★★★★★ | Complete |
 | 03 | Agentic Evaluations & Long-Horizon Tasks | ★★★★★ | Planned |
 | 04 | Multi-Step Reasoning & Planning | ★★★★★ | Planned |
 | 05 | Learning from Feedback | ★★★★☆ | Planned |
@@ -121,7 +121,10 @@ Each chapter follows roughly the same structure:
 8. System Mapping
 9. Apply or Archive
 10. Takeaways
+11. Q&A — learning-time questions and connections
 ```
+
+The Q&A section preserves questions that emerged during study so that the original reasoning path and cross-domain connections can be reconstructed later.
 
 The goal is not exhaustive paper reproduction.
 
