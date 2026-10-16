@@ -121,10 +121,10 @@ Each chapter follows roughly the same structure:
 8. System Mapping
 9. Apply or Archive
 10. Takeaways
-11. Q&A — learning-time questions and connections
+11. Inline ❓ Q&A — questions placed next to the concept they clarify
 ```
 
-The Q&A section preserves questions that emerged during study so that the original reasoning path and cross-domain connections can be reconstructed later.
+Important learning-time questions are placed directly below the concept they clarify using inline `❓ Q&A` blocks, preserving the original reasoning path without forcing readers to jump to a separate section.
 
 The goal is not exhaustive paper reproduction.
 
