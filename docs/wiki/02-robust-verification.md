@@ -181,6 +181,30 @@ Pass?
 
 그리고 이 구조의 핵심 효과는 “품질을 직접 계속 올린다”기보다 **오류가 다음 단계로 전파되는 것을 조기에 차단한다**는 데 있다.
 
+
+### ❓ Q&A — Process Verification은 DHAA의 Macro-workflow와 비슷한가?
+
+그렇다. 다만 Macro-workflow 자체가 Process Verification이라기보다 **각 phase 사이에 verification gate가 배치된 layered workflow**라고 보는 것이 더 정확하다.
+
+DHAA의 흐름은 대략:
+
+```text
+PRD
+→ SPEC
+→ 구현
+→ 테스트
+→ 문서 sync
+→ dead-code cleanup
+```
+
+이고, 각 단계에서 lint·정합성 검사·테스트를 수행한다. 여기에 실패 시 `moai loop / fix` 같은 repair가 들어가므로 구조적으로는:
+
+> **Process Verification + Stage Gates + Repair Loop**
+
+에 가깝다.
+
+핵심 효과는 각 단계가 품질을 마법처럼 높이는 것이 아니라, **오류가 다음 단계로 전파되기 전에 조기에 차단하고 수정하게 만든다**는 점이다.
+
 ---
 
 ## 6. Weak Verifier와 Hard Verifier
@@ -236,6 +260,51 @@ Type checker
 따라서:
 
 > **Hard verifier도 자기 scope 밖에서는 weak하다.**
+
+
+### ❓ Q&A — Macro-workflow의 verifier들은 전부 weak verifier인가?
+
+아니다. 전부 weak라고 하면 너무 거칠다.
+
+- 문서 정합성 판단, LLM review → **weak / soft 성격**
+- compiler, type checker, schema validator, unit test → **hard / deterministic 성격**
+
+다만 hard verifier도 자기 scope 밖에서는 강하지 않다. 예를 들어 type checker는 타입 오류에는 강하지만, 제품 요구사항 충족 여부까지 판단하지는 못한다.
+
+따라서 DHAA는 하나의 verifier를 신뢰하는 구조라기보다 **서로 다른 verification scope를 가진 verifier들을 계층적으로 배치한 구조**로 보는 편이 정확하다.
+
+### ❓ Q&A — Weak verifier = probabilistic, Hard verifier = deterministic인가?
+
+방향은 비슷하지만 완전히 같은 개념은 아니다.
+
+```text
+Probabilistic
+≠ automatically weak
+
+Deterministic
+≠ automatically hard
+```
+
+나쁜 deterministic heuristic도 충분히 weak verifier가 될 수 있다.
+
+더 정확히는:
+
+- **Weak verifier:** 불완전하고 오류 가능성이 큰 verifier
+- **Hard verifier:** 좁은 명제에 대해 명확한 규칙이나 실행 결과로 강하게 판정할 수 있는 verifier
+
+DHAA에 대입하면:
+
+```text
+Jev
+→ probabilistic judgment provider
+→ weak-verifier-like
+
+Decision-Authority-Guard
+→ deterministic verification of permission
+→ hard-verifier-like
+```
+
+단, 둘은 **서로 다른 명제**를 검증한다.
 
 ---
 
@@ -367,6 +436,100 @@ Robust Verification
 ```
 
 이 연결은 이 저장소가 지향하는 **Connecting the dots**의 대표적인 예다.
+
+
+### ❓ Q&A — Weaver와 Weak verifier는 정확히 무슨 관계인가?
+
+`Weak verifier`는 **불완전한 개별 verifier**이고, `Weaver`는 여러 weak verifier를 결합해 stronger unified verifier를 만드는 **framework**다.
+
+```text
+Weak verifier 1 ─┐
+Weak verifier 2 ─┼─→ Weaver ─→ Stronger verifier
+Weak verifier 3 ─┘
+```
+
+즉 Weaver 자체가 verifier의 종류인 것은 아니다.
+
+### ❓ Q&A — Weaver의 weighted aggregation은 MML의 linear combination과 같은 구조인가?
+
+그렇다.
+
+```math
+Score(x)=w_1V_1(x)+w_2V_2(x)+w_3V_3(x)
+```
+
+에서 $w_i$는 scalar coefficient에 해당한다.
+
+벡터 표현으로 쓰면:
+
+```math
+Score(x)=\mathbf{w}^{T}\mathbf{v}(x)
+```
+
+이므로 dot product까지 연결된다.
+
+```text
+MML / Linear Algebra
+→ Linear Combination
+→ Scalar Coefficient
+→ Dot Product
+→ Weighted Ensemble
+→ Weak Verifier Aggregation
+```
+
+### ❓ Q&A — Stronger unified verifier의 output을 다시 recursive aggregation하면 더 강해질까?
+
+**가능은 하지만, Weaver 자체가 recursive framework를 제안한 것은 아니다.** 이건 Weaver에서 자연스럽게 확장할 수 있는 아이디어에 가깝다.
+
+단순히 같은 verifier output을 계속 재집계하면 새로운 정보가 늘지 않는다.
+
+```text
+V1, V2, V3
+→ U1
+→ U1 + V1 + V2 + V3
+→ U2
+→ ...
+```
+
+이 경우 confidence만 커지고 truthfulness는 그대로이거나, 잘못된 consensus가 오히려 강화될 수 있다.
+
+따라서 더 의미 있는 확장은:
+
+```text
+Weak verifiers
+      ↓
+Aggregate
+      ↓
+Uncertain?
+  ├─ No → Stop
+  └─ Yes
+       ↓
+Acquire NEW evidence
+       ↓
+Recompute / Re-verify
+       ↓
+Aggregate again
+```
+
+이다.
+
+> **핵심: recursive aggregation보다 recursive evidence acquisition + aggregation이 더 강하다.**
+
+DHAA에 대응하면 `Jev → Jev → Jev` 반복보다는:
+
+```text
+Jev judgment
+    ↓
+VERIFY
+    ↓
+New evidence acquisition
+    ↓
+Candidate set recomputation
+    ↓
+Jev judgment again
+```
+
+이 더 의미 있다. 이는 DHAA negative experiment에서 드러난 **evidence timing / candidate reachability** 문제와도 직접 연결된다.
 
 ---
 
@@ -530,6 +693,44 @@ DHAA에서 Positive를 `AUTO 승인`으로 정의하면:
 으로 보는 것이 자연스럽다.
 
 즉 단순 accuracy보다 **어떤 종류의 오류가 더 위험한가**를 봐야 한다.
+
+
+### ❓ Q&A — TP / TN / FP / FN을 이산수학처럼 이해해도 되나?
+
+오히려 이 방식이 더 직관적이다.
+
+먼저 실제 상태와 시스템 예측이 같은지만 본다.
+
+```math
+\mathrm{True} \iff \mathrm{Actual} = \mathrm{Prediction}
+```
+
+```math
+\mathrm{False} \iff \mathrm{Actual} \neq \mathrm{Prediction}
+```
+
+그리고 뒤의 Positive / Negative는 **Prediction 값**을 따른다.
+
+```text
+Actual == Prediction ?
+    Yes → T
+    No  → F
+
+Prediction == P ?
+    Yes → Positive
+    No  → Negative
+```
+
+따라서:
+
+```text
+P P → TP
+N N → TN
+N P → FP
+P N → FN
+```
+
+즉 True / False는 equality, 혹은 **XNOR 관점**으로 이해할 수 있다. 자연어 암기보다 논리식으로 재구성하기 쉽다.
 
 ---
 
@@ -703,180 +904,7 @@ evaluation design
 
 ---
 
-## 17. Q&A — 학습 중 개인 질문
-
-이 섹션은 학습 당시 실제로 막혔던 지점과 연결점을 보존한다. 나중에 다시 읽었을 때 당시의 사고 과정을 회상하기 위한 기록이다.
-
-### Q1. Process Verification은 DHAA의 Macro-workflow와 비슷한가?
-
-**질문 맥락**
-
-DHAA는 대략 다음 Macro-workflow를 가진다.
-
-```text
-PRD
-→ SPEC
-→ 구현
-→ 테스트
-→ 문서 sync
-→ dead-code cleanup
-```
-
-각 단계에서 lint나 정합성 검사를 수행하기 때문에 Process Verification과 닮아 보였다.
-
-**답**
-
-맞다. 다만 Macro-workflow 자체가 Process Verification이라기보다 **각 phase 사이에 verification gate가 배치된 layered workflow**라고 보는 것이 더 정확하다.
-
-그리고 실패 시 `moai loop / fix`처럼 repair가 수행되기 때문에:
-
-> **Process Verification + Stage Gates + Repair Loop**
-
-에 더 가깝다.
-
----
-
-### Q2. Macro-workflow의 verifier들은 전부 weak verifier인가?
-
-전부 weak라고 하면 너무 거칠다.
-
-- 문서 정합성 판단, LLM review → weak / soft 성격
-- compiler, type checker, schema validator, unit test → hard / deterministic 성격
-
-다만 hard verifier도 scope 밖에서는 강하지 않다.
-
-따라서 DHAA는 하나의 verifier보다 **서로 다른 verification scope를 가진 verifier들을 계층적으로 배치한 구조**로 보는 편이 좋다.
-
----
-
-### Q3. Weaver와 Weak verifier는 정확히 무슨 관계인가?
-
-`Weak verifier`는 **불완전한 개별 verifier**다.
-
-`Weaver`는 여러 weak verifier를 결합해서 stronger unified verifier를 만드는 **framework**다.
-
-```text
-Weak verifier 1 ─┐
-Weak verifier 2 ─┼─→ Weaver ─→ Stronger verifier
-Weak verifier 3 ─┘
-```
-
-즉 Weaver 자체가 verifier 종류인 것은 아니다.
-
----
-
-### Q4. Weaver의 weighted aggregation은 MML의 linear combination과 같은 구조인가?
-
-그렇다.
-
-```math
-Score(x)=w_1V_1(x)+w_2V_2(x)+w_3V_3(x)
-```
-
-에서 $w_i$는 scalar coefficient에 해당한다.
-
-벡터 표현으로 바꾸면:
-
-```math
-Score(x)=\mathbf{w}^{T}\mathbf{v}(x)
-```
-
-가 되어 dot product로도 연결된다.
-
-따라서:
-
-```text
-MML / Linear Algebra
-→ Linear Combination
-→ Scalar Coefficient
-→ Dot Product
-→ Weighted Ensemble
-→ Weak Verifier Aggregation
-```
-
-으로 연결해서 이해할 수 있다.
-
----
-
-### Q5. Weak verifier = probabilistic verification, Hard verifier = deterministic verification인가?
-
-방향은 비슷하지만 완전히 동일하지는 않다.
-
-```text
-Probabilistic
-≠ automatically weak
-
-Deterministic
-≠ automatically hard
-```
-
-나쁜 deterministic heuristic도 weak verifier가 될 수 있다.
-
-더 정확한 구분은:
-
-- **Weak verifier:** 불완전하고 오류 가능성이 큰 verifier
-- **Hard verifier:** 좁은 명제에 대해 명확한 규칙이나 실행 결과로 강하게 판정할 수 있는 verifier
-
-DHAA에 대입하면:
-
-```text
-Jev
-→ probabilistic judgment provider
-→ weak-verifier-like
-
-Decision-Authority-Guard
-→ deterministic verification of permission
-→ hard-verifier-like
-```
-
-단, 둘은 서로 다른 명제를 검증한다.
-
----
-
-### Q6. TP / TN / FP / FN이 계속 헷갈린다. 이산수학처럼 보면 안 되나?
-
-그렇게 보는 것이 오히려 더 직관적이다.
-
-먼저:
-
-```math
-\mathrm{True} \iff \mathrm{Actual} = \mathrm{Prediction}
-```
-
-```math
-\mathrm{False} \iff \mathrm{Actual} \neq \mathrm{Prediction}
-```
-
-그리고 뒤의 Positive / Negative는 **Prediction 값**이다.
-
-따라서:
-
-```text
-Actual == Prediction ?
-    Yes → T
-    No  → F
-
-Prediction == P ?
-    Yes → Positive
-    No  → Negative
-```
-
-결과:
-
-```text
-P P → TP
-N N → TN
-N P → FP
-P N → FN
-```
-
-즉 True / False는 equality, 혹은 XNOR 관점으로 이해할 수 있다.
-
-이 방식은 자연어 암기보다 논리적으로 재구성하기 쉽다.
-
----
-
-## 18. References
+## 17. References
 
 Stanford CS329A Schedule:
 - https://cs329a.stanford.edu/
