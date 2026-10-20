@@ -1,6 +1,6 @@
 # 03. Agentic Evaluations & Long-Horizon Tasks
 
-> **Status:** In Progress  
+> **Status:** Complete  
 > **핵심 질문:** 에이전트가 짧은 benchmark 문제를 잘 푸는 것을 넘어서, 사람이 몇 시간·며칠씩 수행하는 긴 작업을 얼마나 신뢰성 있게 완주할 수 있는가?
 
 ## 1. Problem
@@ -490,6 +490,57 @@ Part 02의 Robust Verification까지 연결하면 긴 agent trajectory의 중간
 
 ---
 
+### ❓ Q&A — 기존 모델이 y=f(x)라면, Agent는 실생활의 trajectory를 실행하므로 benchmark도 다축이어야 하는가?
+
+좋은 추상화다. 다만 기존 모델을 문자 그대로 입력값 1개·출력값 1개라고 보기보다, 많은 benchmark가 **주어진 input에 대한 output 품질을 하나의 평가 문제로 환원하기 쉬웠다**고 표현하는 편이 정확하다.
+
+```math
+y=f(x)
+```
+
+```text
+Input x
+  ↓
+Model f
+  ↓
+Output y
+  ↓
+Ground truth / Test / Rubric
+```
+
+반면 agent는 한 번의 mapping보다 **시간에 따라 환경과 상호작용하는 trajectory**에 가깝다.
+
+```math
+\tau=(S_0,A_0,S_1,A_1,\ldots,S_T)
+```
+
+agent의 action은 환경을 바꾸고, 바뀐 환경은 다시 다음 observation/input을 만든다.
+
+```math
+S_{t+1}=T(S_t,A_t)
+```
+
+```text
+Observe
+  ↓
+Action
+  ↓
+Environment / State change
+  ↓
+New observation
+  ↓
+Next action
+  ↓
+...
+```
+
+따라서 최종 output 하나만으로는 전체 agent behavior를 충분히 설명하기 어렵고, capability, task horizon, real-world usefulness, 단계별 failure, end-to-end reliability 같은 여러 평가축이 자연스럽게 필요해진다.
+
+> **모델 benchmark는 output을 평가하기 쉬웠지만, agent benchmark는 동적으로 변화하는 system trajectory를 평가해야 한다.**
+
+이것이 Part 03의 세 논문이 각각 task horizon, real-world task quality, capability decomposition을 추가하는 이유를 하나의 관점으로 묶어 준다.
+
+---
 ## 7. Current Takeaways
 
 현재까지의 핵심은 다음과 같다.
@@ -506,6 +557,7 @@ Part 02의 Robust Verification까지 연결하면 긴 agent trajectory의 중간
 10. DeepScholar-Bench는 research workflow를 Retrieval / Synthesis / Verifiability 등으로 분해해 평가한다.
 11. **Component capability와 end-to-end agent reliability는 동일하지 않다.**
 12. 영역별 benchmark 점수는 유용하지만, 긴 autonomous trajectory의 신뢰성을 직접 보장하지는 않는다.
+13. 모델의 output 평가와 달리 agent evaluation은 **state-action trajectory와 feedback loop**를 평가해야 하므로 본질적으로 다축적이다.
 
 ---
 
