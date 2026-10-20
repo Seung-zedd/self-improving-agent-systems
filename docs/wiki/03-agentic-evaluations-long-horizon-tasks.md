@@ -267,7 +267,113 @@ Selection / Aggregation
 
 ---
 
-## 5. Current Takeaways
+## 5. GDPval — Real-World Economically Valuable Tasks
+
+앞의 *Measuring AI Ability to Complete Long Software Tasks*가 **task horizon**을 평가축으로 가져왔다면, GDPval은 평가 대상을 **실제 경제적으로 가치 있는 전문 업무**로 확장한다.
+
+기존 benchmark는 대체로 잘 정제된 문제와 명확한 채점 기준을 가진다.
+
+```text
+Input
+ ↓
+Well-defined task
+ ↓
+Model
+ ↓
+Answer
+ ↓
+Score
+```
+
+하지만 실제 professional task는 불완전한 요구사항, 여러 자료, domain knowledge, 긴 작업 과정과 최종 deliverable의 품질이 함께 얽힌다.
+
+```text
+Incomplete requirements
++ Multiple sources
++ Domain knowledge
++ Work process
++ Deliverable quality
+        ↓
+Real-world professional task
+```
+
+따라서 평가 단위도 단순한 **answer correctness**에서 **work product quality**로 확장된다.
+
+```text
+Question → Answer
+```
+
+보다:
+
+```text
+Professional task
+      ↓
+Work process
+      ↓
+Deliverable
+```
+
+에 가까워진다.
+
+이런 업무에서는 하나의 정답 문자열보다 결과의 정확성, 요구사항 충족도, 근거의 적절성, 전문적 품질, 실제 사용 가능한 deliverable인지 같은 여러 평가축이 중요해진다.
+
+이 지점에서 Part 02의 **Robust Verification** 문제가 다시 등장한다.
+
+```text
+Agent generates work
+        ↓
+Who verifies it?
+        ↓
+What counts as ground truth?
+        ↓
+How reliable is that verifier?
+```
+
+### Task Horizon과 Economic Value는 다른 축이다
+
+앞 논문의 time horizon과 GDPval의 real-world value를 함께 보면 agent evaluation은 적어도 두 개의 서로 다른 질문을 갖는다.
+
+```text
+             Real-world / Economic Value
+                        ↑
+                        │
+                        │
+                        └──────────────→ Task Horizon
+```
+
+> **얼마나 긴 작업을 완주할 수 있는가?**
+
+와
+
+> **그 작업의 결과가 실제로 가치 있고 usable한가?**
+
+는 같은 질문이 아니다. 오랫동안 autonomous하게 실행되더라도 결과물이 쓸모없다면 높은 task horizon만으로 좋은 agent라고 할 수 없다.
+
+### Connecting the dots
+
+Part 02와 현재 Part를 연결하면 agent capability는 단일 accuracy score가 아니라 여러 독립적인 축으로 보이기 시작한다.
+
+```text
+Agent Capability
+
+├─ Correctness
+├─ Verification reliability
+├─ Task horizon
+├─ Real-world usefulness
+├─ Robustness
+└─ Authority / Safety
+```
+
+> **주의:** Authority / Safety는 GDPval이 직접 제안하는 평가축이 아니라, DHAA에서 다뤄 온 authority-aware system design을 연결해 일반화한 별도의 축이다.
+
+핵심 구분은 다음과 같다.
+
+> **Technical completion ≠ Real-world task success**
+
+시스템의 각 기능이 기술적으로 동작한다는 사실과, 그 시스템이 원래 해결하려던 실제 문제를 제대로 해결한다는 사실은 서로 다른 evaluation layer에 속한다.
+---
+
+## 6. Current Takeaways
 
 현재까지의 핵심은 다음과 같다.
 
@@ -277,6 +383,9 @@ Selection / Aggregation
 4. KV cache는 hallucination의 원인이 아니라 inference optimization이며, context-management policy와 구분해야 한다.
 5. Attention과 RAG는 모두 similarity-based scoring이라는 공통 abstraction으로 연결할 수 있다.
 6. 긴 agent workflow에서는 중요한 상태를 context 밖의 artifact로 materialize하는 것이 유리하다.
+7. GDPval은 benchmark evaluation을 실제 경제적으로 가치 있는 professional task와 deliverable quality로 확장한다.
+8. **Task horizon과 real-world usefulness는 서로 다른 평가축**이다.
+9. **Technical completion과 real-world task success를 구분**해야 한다.
 
 ---
 
