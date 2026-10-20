@@ -10,7 +10,7 @@
 |---:|---|---|
 | 01 | [Test-Time Compute Scaling](./01-test-time-compute-scaling.md) | Complete |
 | 02 | [Robust Verification](./02-robust-verification.md) | Complete |
-| 03 | Agentic Evaluations & Long-Horizon Tasks | Planned |
+| 03 | [Agentic Evaluations & Long-Horizon Tasks](./03-agentic-evaluations-long-horizon-tasks.md) | In Progress |
 | 04 | Multi-Step Reasoning & Planning | Planned |
 | 05 | Learning from Feedback | Planned |
 | 06 | Open-Ended Self-Improvement | Planned |
@@ -49,4 +49,4 @@
 
 ## Current Focus
 
-다음 챕터는 **Agentic Evaluations & Long-Horizon Tasks**다.
+현재 챕터는 **Agentic Evaluations & Long-Horizon Tasks**를 학습 중이다.
