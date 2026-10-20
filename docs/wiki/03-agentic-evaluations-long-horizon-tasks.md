@@ -373,7 +373,124 @@ Agent Capability
 시스템의 각 기능이 기술적으로 동작한다는 사실과, 그 시스템이 원래 해결하려던 실제 문제를 제대로 해결한다는 사실은 서로 다른 evaluation layer에 속한다.
 ---
 
-## 6. Current Takeaways
+## 6. DeepScholar-Bench — Generative Research Synthesis
+
+DeepScholar-Bench는 단순 QA가 아니라 **Generative Research Synthesis**를 평가한다.
+
+```text
+Research Question
+       ↓
+Search / Retrieval
+       ↓
+Relevant Sources
+       ↓
+Read & Understand
+       ↓
+Cross-source Synthesis
+       ↓
+Claims + Citations
+       ↓
+Research Report
+```
+
+최종 보고서만 채점하면 agent가 실제로 어느 단계에서 성공하거나 실패했는지 알기 어렵다. 따라서 research agent의 능력을 여러 capability로 분해해 평가하는 관점이 중요하다.
+
+```text
+Research Agent Quality
+        │
+        ├── Retrieval
+        │    필요한 source를 찾았는가?
+        │
+        ├── Synthesis
+        │    여러 source의 정보를 올바르게 연결했는가?
+        │
+        └── Verifiability
+             claim을 citation으로 검증할 수 있는가?
+```
+
+이 구조는 Part 02의 **Process Verification / failure localization**과 직접 연결된다.
+
+```text
+관련 source 자체를 못 찾음
+→ Retrieval failure
+
+source는 찾았지만 잘못 해석
+→ Synthesis failure
+
+해석은 맞지만 citation이 claim을 지지하지 않음
+→ Verifiability failure
+```
+
+따라서 핵심은 다음과 같다.
+
+> **Agent evaluation도 monolithic score 하나가 아니라 capability decomposition이 필요하다.**
+
+### Long-Horizon Reliability와의 연결
+
+research agent는 search, read, compare, filter, synthesize, cite, revise 같은 여러 단계를 하나의 trajectory에서 수행한다. 각 component를 개별적으로 잘 수행하는 것과 전체 trajectory를 안정적으로 완주하는 것은 다른 문제다.
+
+```math
+P(\text{success}) = P(R \cap S \cap V \cap \cdots)
+```
+
+즉 Retrieval, Synthesis, Verifiability 등의 조건을 같은 trajectory에서 동시에 만족해야 한다.
+
+> **Component capability ≠ End-to-End agent reliability**
+
+### ❓ Q&A — 신모델의 Coding / Math / Reasoning benchmark 점수도 결국 Input → Output 평가인가?
+
+대체로 개별 benchmark는 주어진 문제에 대한 output을 ground truth, unit test, rubric 등으로 평가하고 그 결과를 aggregate한다. 따라서 모델 발표에서 보이는 영역별 단일 점수는 주로 **component capability를 압축한 지표**로 이해할 수 있다.
+
+```text
+Input
+  ↓
+Model
+  ↓
+Output
+  ↓
+Ground truth / Test / Rubric
+  ↓
+Score
+```
+
+다만 모든 benchmark가 동일한 방식은 아니므로 전부 단순한 문자열 정답 비교라고 일반화해서는 안 된다. coding benchmark는 test execution을 사용할 수 있고, 일부 reasoning benchmark는 과정이나 judge를 포함할 수도 있다.
+
+중요한 구분은 다음이다.
+
+```text
+Capability benchmark
+"이 문제를 풀 수 있는가?"
+        ↓
+Long-horizon evaluation
+"얼마나 긴 task까지 완주하는가?"
+        ↓
+Real-world evaluation
+"실제 가치 있는 일을 수행하는가?"
+        ↓
+Decomposed evaluation
+"어디서 성공/실패하는가?"
+```
+
+따라서 높은 Math / Coding / Reasoning 점수가 곧바로 같은 수준의 autonomous-agent reliability를 의미하지 않는다.
+
+### Connecting the dots
+
+```text
+Long Software Tasks
+→ Task Horizon
+
+GDPval
+→ Real-World Task Quality
+
+DeepScholar-Bench
+→ Capability-Decomposed Evaluation
+```
+
+Part 02의 Robust Verification까지 연결하면 긴 agent trajectory의 중간 process를 검증하고, 최종 deliverable을 평가하며, 실패가 발생한 capability를 localization하는 구조로 이어진다.
+
+---
+
+## 7. Current Takeaways
 
 현재까지의 핵심은 다음과 같다.
 
@@ -386,6 +503,9 @@ Agent Capability
 7. GDPval은 benchmark evaluation을 실제 경제적으로 가치 있는 professional task와 deliverable quality로 확장한다.
 8. **Task horizon과 real-world usefulness는 서로 다른 평가축**이다.
 9. **Technical completion과 real-world task success를 구분**해야 한다.
+10. DeepScholar-Bench는 research workflow를 Retrieval / Synthesis / Verifiability 등으로 분해해 평가한다.
+11. **Component capability와 end-to-end agent reliability는 동일하지 않다.**
+12. 영역별 benchmark 점수는 유용하지만, 긴 autonomous trajectory의 신뢰성을 직접 보장하지는 않는다.
 
 ---
 
