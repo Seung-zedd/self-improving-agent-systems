@@ -117,7 +117,9 @@ Part 04 / LATS
 State → Action Candidates → Future States → Trajectories
 ```
 
-LATS는 LM을 value function으로도 활용하며 environment feedback과 self-consistency signal을 이용해 state의 유망함을 평가한다.
+LATS는 **Language Model (LM)**을 value function으로도 활용하며 environment feedback과 self-consistency signal을 이용해 state의 유망함을 평가한다.
+
+> **용어 캡션 — LM (Language Model):** 여기서는 다음 action을 생성하는 모델이면서, 동시에 현재 state가 얼마나 유망한지를 평가하는 heuristic evaluator 역할도 한다. LM의 높은 평가는 정답이나 허가를 보장하지 않는다.
 
 중요한 구분:
 
@@ -251,6 +253,20 @@ Part 03
 Part 04 / LATS
 trajectory 자체를 search space로 만들 수 있는가?
 ```
+
+## Glossary
+
+| Term | Meaning in this chapter |
+|---|---|
+| **LM** | **Language Model.** action candidate를 생성하거나 state의 유망함을 평가하는 언어 모델. |
+| **Value Function / Value Estimate** | 현재 state가 앞으로 좋은 결과로 이어질 가능성을 search 관점에서 추정하는 값. 정답 보장이나 permission이 아니다. |
+| **MCTS** | **Monte Carlo Tree Search.** tree에서 exploration과 exploitation을 조절하며 유망한 trajectory를 탐색하는 방법. |
+| **UCT** | MCTS selection에서 node의 현재 가치와 아직 덜 탐색된 정도를 함께 고려하는 기준. |
+| **Self-Consistency** | 여러 생성 결과 사이의 일관성/합의를 추가 signal로 활용하는 방식. |
+| **Environment Feedback** | 모델 자기평가가 아니라 실행 환경에서 돌아온 observation, reward, test result 등의 외부 signal. |
+| **Trajectory** | state와 action이 시간 순서로 이어지는 경로, 예: \(S_0, A_0, S_1, A_1, \ldots, S_T\). |
+
+> 이후 chapter에서도 처음 등장하는 약어나 직관적으로 파악하기 어려운 용어는 **첫 등장 시 풀네임 + 짧은 용어 캡션**으로 설명하고, 반복해서 참조할 핵심 용어는 Glossary에 모은다.
 
 ## 8. Current Takeaway
 
