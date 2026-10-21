@@ -94,7 +94,7 @@ This provides a useful counterpoint to research on inference-time search and ver
 | 01 | [Test-Time Compute Scaling](./docs/wiki/01-test-time-compute-scaling.md) | ★★★★★ | Complete |
 | 02 | [Robust Verification](./docs/wiki/02-robust-verification.md) | ★★★★★ | Complete |
 | 03 | [Agentic Evaluations & Long-Horizon Tasks](./docs/wiki/03-agentic-evaluations-long-horizon-tasks.md) | ★★★★★ | Complete |
-| 04 | Multi-Step Reasoning & Planning | ★★★★★ | Planned |
+| 04 | [Multi-Step Reasoning & Planning](./docs/wiki/04-multi-step-reasoning-planning/README.md) | ★★★★★ | In Progress |
 | 05 | Learning from Feedback | ★★★★☆ | Planned |
 | 06 | Open-Ended Self-Improvement | ★★★★☆ | Planned |
 | 07 | Search & Deep Research Agents | ★★★★☆ | Planned |
