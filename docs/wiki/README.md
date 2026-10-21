@@ -11,7 +11,7 @@
 | 01 | [Test-Time Compute Scaling](./01-test-time-compute-scaling.md) | Complete |
 | 02 | [Robust Verification](./02-robust-verification.md) | Complete |
 | 03 | [Agentic Evaluations & Long-Horizon Tasks](./03-agentic-evaluations-long-horizon-tasks.md) | Complete |
-| 04 | Multi-Step Reasoning & Planning | Planned |
+| 04 | [Multi-Step Reasoning & Planning](./04-multi-step-reasoning-planning/README.md) | In Progress |
 | 05 | Learning from Feedback | Planned |
 | 06 | Open-Ended Self-Improvement | Planned |
 | 07 | Search & Deep Research Agents | Planned |
@@ -49,4 +49,4 @@
 
 ## Current Focus
 
-다음 챕터는 **Multi-Step Reasoning & Planning**이다.
+현재 **Multi-Step Reasoning & Planning**을 학습 중이다. Part 04부터는 논문별 source-level note와 Part-level synthesis를 분리한다.
